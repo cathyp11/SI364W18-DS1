@@ -1,5 +1,6 @@
 from flask import Flask, request
 import requests
+import json
 
 
 app = Flask(__name__)
@@ -52,17 +53,18 @@ def displayData():
 ## Task 4
 ## Note : Since this is a dyanmic URL, recipes function should recieve a paramter called `ingrdient` 
 @app.route('/recipe/<ingredient>')
-def recipes(ingrdient):
+def recipes(ingredient):
     base_url = 'http://www.recipepuppy.com/api'
     params_dict = {}
-    params_dict['i'] = ingrdient
+    params_dict['i'] = ingredient
     res = requests.get(base_url, params = params_dict)
-    read = data.text
+    read = res.text
     jsons = json.loads(read)
     recipes = []
     for r in jsons['results']:
       recipes.append(r['title'])
     all_recipes = '<br>'.join(recipes)
     return all_recipes
+
 if __name__ == '__main__':
     app.run()
