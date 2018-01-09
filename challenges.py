@@ -47,15 +47,22 @@ def displayData():
       params_dict['q'] = request.form['ingredient']
       data = requests.get(base_url, params = params_dict)
       read = data.text
-      # read = data.text
-      # data = 'http://www.recipepuppy.com/api/' + request.form['eggs']
       return read
 
 ## Task 4
 ## Note : Since this is a dyanmic URL, recipes function should recieve a paramter called `ingrdient` 
 @app.route('/recipe/<ingredient>')
-def recipes():
-    pass
-
+def recipes(ingrdient):
+    base_url = 'http://www.recipepuppy.com/api'
+    params_dict = {}
+    params_dict['i'] = ingrdient
+    res = requests.get(base_url, params = params_dict)
+    read = data.text
+    jsons = json.loads(read)
+    recipes = []
+    for r in jsons['results']:
+      recipes.append(r['title'])
+    all_recipes = '<br>'.join(recipes)
+    return all_recipes
 if __name__ == '__main__':
     app.run()
